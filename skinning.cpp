@@ -20,7 +20,7 @@ const float FrontClippingPlane = 0.5f;
 const float BackClippingPlane = 1.0e13f;
 
 const unsigned nPointsPerCircle = 16;
-const unsigned nPointsPerGeneratrix = 6;
+const unsigned nPointsPerGeneratrix = 3;
 const float Height = 12.f;
 const float Radius = 5.0f;
 
@@ -28,7 +28,7 @@ LRESULT CALLBACK	WndProc(HWND, UINT, WPARAM, LPARAM);
 void Render(D3D::GraphicDevice& device, Vertices &vertices, Indices &indices)
 {
 	D3D::GraphicDevice::DC dc( device, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, Colors::Gray, 1.0f, 0 );
-	dc.DrawIndexedPrimitive( D3DPT_TRIANGLELIST, 0, 0, vertices.size(), 0, indices.size()/3 );
+	dc.DrawIndexedPrimitive( D3DPT_TRIANGLESTRIP, 0, 0, vertices.size(), 0, indices.size()-2 );
 }
 
 int APIENTRY _tWinMain(HINSTANCE hInstance,

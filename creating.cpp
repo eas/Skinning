@@ -56,7 +56,21 @@ void InitVertices(	Vertices& vertices, Indices& indices,
 		}
 		h+=heightStep;
 	}
-	for( unsigned level = 0; level < nPointsPerGeneratrix-1; ++level )
+
+	for( unsigned level = 0; level<nPointsPerGeneratrix-1; ++level )
+	{
+		indices.push_back( level*nPointsPerCircle + 0 );
+		indices.push_back( level*nPointsPerCircle + 1 );
+		indices.push_back( (level+1)*nPointsPerCircle + 1 );
+
+		for( unsigned i = 1; i< nPointsPerCircle; ++i )
+		{
+			indices.push_back(level*nPointsPerCircle + (i+1)%nPointsPerCircle );
+			indices.push_back((level+1)*nPointsPerCircle + (i+1)%nPointsPerCircle );
+		}
+		indices.push_back( (level+1)*nPointsPerCircle + 1 );
+	}
+	/*for( unsigned level = 0; level < nPointsPerGeneratrix-1; ++level )
 	{
 		for( unsigned number = 0; number < nPointsPerCircle; ++number )
 		{
@@ -68,5 +82,5 @@ void InitVertices(	Vertices& vertices, Indices& indices,
 			indices.push_back( (level+1)*nPointsPerCircle + (number+1)%nPointsPerCircle);
 			indices.push_back( level*nPointsPerCircle + (number+1)%nPointsPerCircle);
 		}
-	}
+	}*/
 }
