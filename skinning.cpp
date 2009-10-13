@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include "skinning.h"
-#include "internals.h"
+#include "helper.h"
 
 #include "graphics.h"
 #include "colors.h"
@@ -36,7 +36,9 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
                      LPTSTR,
                      int nCmdShow)
 {
-	Window mainWindow(hInstance, nCmdShow, &WndProc);
+{ // code block
+	Helper::Window mainWindow(	hInstance, nCmdShow, &WndProc,
+								L"Skinning", L"skinning", 4 );
 
 	D3DPRESENT_PARAMETERS params;
 		ZeroMemory( &params, sizeof( params ) );
@@ -71,7 +73,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	D3D::Shader shader(graphicDevice, ShaderFileName);
 	shader.Use();
 
-	SpectatorCoords spectatorCoords( 20.0f, D3DX_PI / 2, -D3DX_PI / 2 );
+	Helper::SpectatorCoords spectatorCoords( 20.0f, D3DX_PI / 2, -D3DX_PI / 2 );
 
 	shader.SetWorldMatrix( TranslationMatrix( 0.0f, -Height/2, 0.0f ) );
 	shader.SetProjectiveMatrix( ProjectiveMatrix(FrontClippingPlane, BackClippingPlane) );
@@ -97,10 +99,11 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 			Render(graphicDevice, vertices, indices);
 		}
     }
+} // code block
 
 	_CrtDumpMemoryLeaks();
 
-	return (int) msg.wParam;
+	return 0;
 }
 
 
@@ -111,8 +114,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_KEYDOWN:
 		{
 			D3D::Shader* pShader = NULL;
-			SpectatorCoords* pSpectatorCoords = NULL;
-			pSpectatorCoords = reinterpret_cast<SpectatorCoords*>(GetWindowLong(hWnd, 0));
+			Helper::SpectatorCoords* pSpectatorCoords = NULL;
+			pSpectatorCoords = reinterpret_cast<Helper::SpectatorCoords*>(
+												GetWindowLong(hWnd, 0));
 			pShader = reinterpret_cast<D3D::Shader*>(GetWindowLong(hWnd, sizeof(LONG)));
 
 			switch(wParam)
