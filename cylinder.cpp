@@ -10,6 +10,9 @@
 #include <vector>
 #include <assert.h>
 #include <algorithm>
+#include <time.h>
+
+
 #ifndef NDEBUG
 	#define new new( _CLIENT_BLOCK, __FILE__, __LINE__)
 #endif
@@ -64,13 +67,14 @@ void InitVertices(	Vertices& vertices, Indices& indices,
 }
 
 Cylinder::Cylinder(unsigned int nPointsPerCircle, unsigned int nPointsPerGeneratrix, 
-				   float height, float R, D3D::GraphicDevice &device)
+				   float height, float R, D3D::GraphicDevice &device, float freq, float maxAngle)
 	: device_(device),
 	  vertexDeclaration_(device, DefaultVertexDeclaration),
 	  vertexBuffer_(device),
 	  indexBuffer_(device),
 	  shader_(device, L"cylinder.vsh"),
-	  angle_(0.0f)
+	  freq_(freq),
+	  maxAngle_(maxAngle)
 {
 	Vertices vertices;
 	Indices indices;
@@ -90,12 +94,14 @@ Cylinder::~Cylinder()
 }
 void Cylinder::Draw()
 {
+	float time = static_cast<float>(clock()) / CLOCKS_PER_SEC;
+	float angle = (sinf(freq_*time * (2*D3DX_PI)) + 1)/2 * maxAngle_;
 	vertexBuffer_.Use(0,0);
 	indexBuffer_.Use();
 	vertexDeclaration_.Use();
 	shader_.Use();
 	shader_.SetMatrix( projectiveMatrix_*viewMatrix_*positionMatrix_, 0 );
-	shader_.SetMatrix( RotateZMatrix( D3DX_PI/8 ), 4 );
+	shader_.SetMatrix( RotateZMatrix( angle ), 4 );
 	shader_.SetMatrix( UnityMatrix(), 8);
 	vertexDeclaration_.Use();
 
@@ -112,8 +118,4 @@ void Cylinder::SetViewMatrix(const D3DXMATRIX& viewMatrix)
 void Cylinder::SetProjectiveMatrix(const D3DXMATRIX& projectiveMatrix)
 {
 	projectiveMatrix_ = projectiveMatrix;
-}
-void Cylinder::SetAngle(float angle)
-{
-	angle_ = angle;
 }

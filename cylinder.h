@@ -13,7 +13,7 @@ public:
 
 	Cylinder( unsigned nPointsPerCircle, unsigned nPointsPerGeneratrix,
 			  float height, float R,
-			  D3D::GraphicDevice& device);
+			  D3D::GraphicDevice& device, float freq, float maxAngle );
 	void Draw();
 	void SetPositionMatrix(const D3DXMATRIX& positionMatrix);
 	void SetViewMatrix(const D3DXMATRIX& viewMatrix);
@@ -31,7 +31,8 @@ private:
 	D3DXMATRIX positionMatrix_, viewMatrix_, projectiveMatrix_;
 	unsigned nVertices_;
 	unsigned nPrimitives_;
-	float angle_;
+	const float freq_;
+	const float maxAngle_;
 	//vertexDeclaration.Use();
 };
 

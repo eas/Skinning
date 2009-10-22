@@ -19,10 +19,12 @@ const LPCTSTR ShaderFileName = L"shader.vsh";
 const float FrontClippingPlane = 0.5f;
 const float BackClippingPlane = 1.0e13f;
 
-const unsigned nPointsPerCircle = 64;
-const unsigned nPointsPerGeneratrix = 8;
+const unsigned nPointsPerCircle = 32;
+const unsigned nPointsPerGeneratrix = 16;
 const float Height = 22.0f;
 const float Radius = 8.0f;
+const float Freq = 1.0f;
+const float MaxAngle = D3DX_PI / 4;
 
 LRESULT CALLBACK	WndProc(HWND, UINT, WPARAM, LPARAM);
 void Render(D3D::GraphicDevice& device, Helper::SpectatorCoords& ,
@@ -56,8 +58,8 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	graphicDevice.SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE );
 
 	Helper::SpectatorCoords spectatorCoords( 40.0f, D3DX_PI / 2, -D3DX_PI / 2 );
-	Cylinder cylinder(nPointsPerCircle, nPointsPerGeneratrix, Height, Radius, graphicDevice);
-	cylinder.SetPositionMatrix( TranslationMatrix(0, -Height/2*0, 0) );
+	Cylinder cylinder(nPointsPerCircle, nPointsPerGeneratrix, Height, Radius, graphicDevice, Freq, MaxAngle);
+	cylinder.SetPositionMatrix( RotateZMatrix(D3DX_PI/2)*TranslationMatrix(0, -Height/2*0, 0) );
 	cylinder.SetViewMatrix( ViewMatrix( spectatorCoords.GetCartesianCoords(),
 										D3DXVECTOR3(0.0f, 0.0f, 0.0f),
 										D3DXVECTOR3(0.0f, 1.0f, 0.0f)) );
