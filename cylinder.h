@@ -18,7 +18,6 @@ public:
 	void SetPositionMatrix(const D3DXMATRIX& positionMatrix);
 	void SetViewMatrix(const D3DXMATRIX& viewMatrix);
 	void SetProjectiveMatrix(const D3DXMATRIX& projectionMatrix);
-	void SetAngle(float angle);
 
 	virtual ~Cylinder();
 private:

@@ -21,7 +21,7 @@ const float BackClippingPlane = 1.0e13f;
 
 const unsigned nPointsPerCircle = 32;
 const unsigned nPointsPerGeneratrix = 16;
-const float Height = 22.0f;
+const float Height = 50.0f;
 const float Radius = 8.0f;
 const float Freq = 1.0f;
 const float MaxAngle = D3DX_PI / 4;
